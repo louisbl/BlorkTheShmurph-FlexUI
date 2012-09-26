@@ -4,4 +4,13 @@
 	<fx:Declarations>
 		<!-- Placer ici les éléments non visuels (services et objets de valeur, par exemple). -->
 	</fx:Declarations>
+	<s:List id="leader_board" dataProvider="{data}">
+		<s:itemRenderer>
+			<fx:Component>
+				<s:IconItemRenderer labelField="user_name"
+									messageField="score" 
+									decorator="user_picture"/>
+			</fx:Component>
+		</s:itemRenderer>
+	</s:List>
 </views:AView>
