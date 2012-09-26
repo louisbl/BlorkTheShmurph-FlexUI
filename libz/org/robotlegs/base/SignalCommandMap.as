@@ -51,7 +51,7 @@ package org.robotlegs.base
             return ISignal(signalClassMap[signalClass]) || createSignalClassInstance(signalClass);
         }
 
-        private function createSignalClassInstance(signalClass:Class):ISignal
+        protected function createSignalClassInstance(signalClass:Class):ISignal
         {
             var injectorForSignalInstance:IInjector = injector;
             var signal:ISignal;

@@ -7,4 +7,12 @@
 	<darkunicorn:DarkUnicornContext contextView="{this}" />
 	</fx:Declarations>
 	
+	<fx:Metadata>
+		[ResourceBundle("splash")]
+		[ResourceBundle("login")]
+		[ResourceBundle("home")]
+		[ResourceBundle("game")]
+		[ResourceBundle("end")]
+		[ResourceBundle("facebook")]
+	</fx:Metadata>
 </s:Application>

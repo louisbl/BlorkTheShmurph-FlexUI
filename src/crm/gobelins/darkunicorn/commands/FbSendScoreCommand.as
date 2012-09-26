@@ -1,19 +1,18 @@
 package crm.gobelins.darkunicorn.commands
 {
-	import crm.gobelins.darkunicorn.services.FbLoginVo;
 	import crm.gobelins.darkunicorn.services.FbService;
 	
 	import org.robotlegs.mvcs.Command;
 	
-	public class FbLoginCommand extends Command
+	public class FbSendScoreCommand extends Command
 	{
 		[Inject]
-		public var fb_serv : FbService;
+		public var score : int;
 		[Inject]
-		public var vo : FbLoginVo;
+		public var fb_service : FbService;
 		
 		override public function execute() : void {
-			fb_serv.loginFacebook(vo);
+			fb_service.sendScore( score );
 		}
 	}
 }

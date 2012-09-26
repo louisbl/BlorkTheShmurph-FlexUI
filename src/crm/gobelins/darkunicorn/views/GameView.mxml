@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<views:AView xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			 xmlns:s="library://ns.adobe.com/flex/spark" xmlns:views="crm.gobelins.darkunicorn.views.*"
+			 currentState="playing"
+			 creationComplete="_init()">
+	<fx:Script>
+		<![CDATA[
+			import org.osflash.signals.Signal;
+			public var finish : Signal;
+			
+			protected function _init() : void {
+				finish = new Signal(int);
+			}
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- Placer ici les éléments non visuels (services et objets de valeur, par exemple). -->
+	</fx:Declarations>
+	<views:states>
+		<s:State name="paused"/>
+		<s:State name="playing"/>
+	</views:states>
+	<s:Button id="pause" includeIn="playing" click="{currentState='paused'}">
+		<s:label>{resourceManager.getString('game','pause')}</s:label>
+	</s:Button>
+	<s:Group>
+		<s:layout>
+			<s:VerticalLayout paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" gap="5" 
+							  horizontalAlign="center" verticalAlign="top"/>
+		</s:layout>
+		<s:Button id="btn_resume" includeIn="paused" click="{currentState='playing'}">
+			<s:label>{resourceManager.getString('game','resume')}</s:label>
+		</s:Button>
+		<s:Button id="btn_cancel" includeIn="paused">
+			<s:label>{resourceManager.getString('game','cancel')}</s:label>
+		</s:Button>
+		<s:Button id="btn_score" includeIn="playing">
+			<s:label>DEBUG score = 1200</s:label>
+		</s:Button>
+	</s:Group>
+</views:AView>

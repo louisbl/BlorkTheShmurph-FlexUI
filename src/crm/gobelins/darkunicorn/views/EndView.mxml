@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<views:AView xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			 xmlns:s="library://ns.adobe.com/flex/spark" xmlns:views="crm.gobelins.darkunicorn.views.*">
+	<fx:Declarations>
+		<!-- Placer ici les éléments non visuels (services et objets de valeur, par exemple). -->
+	</fx:Declarations>
+	<s:Group>
+		<s:layout>
+			<s:VerticalLayout paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" gap="5" 
+							  horizontalAlign="center" verticalAlign="top"/>
+		</s:layout>
+		<s:Button id="btn_play">
+			<s:label>{resourceManager.getString('end','play')}</s:label>
+		</s:Button>
+		<s:Image id="user_picture" source="{data.user_picture}"/>
+		<s:Label id="user_name" text="{data.user_name}"/>
+		<s:Label id="score" text="{data.score}"/>
+		<s:Button id="btn_halloffame">
+			<s:label>{resourceManager.getString('end','hall_of_fame')}</s:label>
+		</s:Button>
+		<s:Button id="btn_home">
+			<s:label>{resourceManager.getString('end','home')}</s:label>
+		</s:Button>
+	</s:Group>
+</views:AView>

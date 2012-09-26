@@ -6,7 +6,13 @@
 	<fx:Declarations>
 		<!-- Placer ici les éléments non visuels (services et objets de valeur, par exemple). -->
 	</fx:Declarations>
-	<s:Label>
-		Hello Robot Flex
-	</s:Label>
+	<s:Group>
+		<s:layout>
+			<s:VerticalLayout paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" gap="5" 
+							  horizontalAlign="center" verticalAlign="top"/>
+		</s:layout>
+		<s:Button id="btn_play">
+			<s:label>{resourceManager.getString('home','play')}</s:label>
+		</s:Button>
+	</s:Group>
 </views:AView>

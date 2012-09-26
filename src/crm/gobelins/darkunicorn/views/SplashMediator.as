@@ -1,7 +1,6 @@
 package crm.gobelins.darkunicorn.views
 {
-	import crm.gobelins.darkunicorn.models.LangModel;
-	import crm.gobelins.darkunicorn.signals.StartClickedSignal;
+	import crm.gobelins.darkunicorn.signals.GotoFbSignal;
 	
 	import flash.events.MouseEvent;
 	
@@ -12,18 +11,16 @@ package crm.gobelins.darkunicorn.views
 		[Inject]
 		public var view : SplashView;
 		[Inject]
-		public var lang_model : LangModel;
-		[Inject]
-		public var start_signal : StartClickedSignal;
+		public var start_signal : GotoFbSignal;
 		
 		override public function onRegister():void {
 			trace("SplashMediator.onRegister()");
 			view.btn_start.addEventListener(MouseEvent.CLICK, _onStartClicked );
-			view.data = lang_model.current_language.splash
 		}
 		
 		protected function _onStartClicked(event:MouseEvent):void
 		{
+			view.btn_start.removeEventListener(MouseEvent.CLICK, _onStartClicked );
 			start_signal.dispatch();
 		}
 	}

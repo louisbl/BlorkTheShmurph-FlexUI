@@ -1,9 +1,16 @@
 package crm.gobelins.darkunicorn.views
 {
-	import crm.gobelins.darkunicorn.signals.StartClickedSignal;
+	import crm.gobelins.darkunicorn.models.ChangeViewVo;
+	import crm.gobelins.darkunicorn.services.FbUserVo;
+	import crm.gobelins.darkunicorn.signals.ChangeViewSignal;
+	import crm.gobelins.darkunicorn.signals.GotoEndSignal;
+	import crm.gobelins.darkunicorn.signals.GotoFbSignal;
+	import crm.gobelins.darkunicorn.signals.GotoGameSignal;
+	import crm.gobelins.darkunicorn.signals.GotoHomeSignal;
 	
 	import org.robotlegs.mvcs.Mediator;
 	
+	import spark.components.View;
 	import spark.preloaders.SplashScreenImageSource;
 	
 	public class ViewManagerMediator extends Mediator
@@ -11,17 +18,18 @@ package crm.gobelins.darkunicorn.views
 		[Inject]
 		public var view : ViewManager;
 		[Inject]
-		public var start_signal : StartClickedSignal;
+		public var change_view_sig : ChangeViewSignal;
+		[Inject]
+		public var view_ready : GotoSplashSignal;
 		
 		override public function onRegister():void{
 			trace("ViewManagerMediator.onRegister()");
-			start_signal.add(_onStartClicked);
-			view.pushView(SplashView);
+			change_view_sig.add(_onChangeView);
+			view_ready.dispatch();
 		}
 		
-		private function _onStartClicked():void
-		{
-			view.pushView(LoginView);
+		protected function _onChangeView( vo : ChangeViewVo ) : void {
+			view.pushView(vo.viewClass, vo.data );
 		}
 	}
 }
