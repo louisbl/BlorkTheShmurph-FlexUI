@@ -1,7 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <views:AView xmlns:fx="http://ns.adobe.com/mxml/2009" 
-			 xmlns:s="library://ns.adobe.com/flex/spark" xmlns:views="crm.gobelins.darkunicorn.views.*">
+			 xmlns:s="library://ns.adobe.com/flex/spark" xmlns:views="crm.gobelins.darkunicorn.views.*"
+			 currentState="login">
 	<fx:Declarations>
 		<!-- Placer ici les éléments non visuels (services et objets de valeur, par exemple). -->
 	</fx:Declarations>
+	<views:states>
+		<s:State name="logged_in" />
+		<s:State name="login"/>
+		<s:State name="wait" />
+	</views:states>
+	<s:Group>
+		<s:layout>
+			<s:VerticalLayout paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" gap="5" 
+							  horizontalAlign="center" verticalAlign="top"/>
+		</s:layout>
+		<s:Label includeIn="wait" >
+			{data.wait}
+		</s:Label>
+		<s:Label includeIn="login">
+			{data.facebook}
+		</s:Label>
+		<s:Button id="btn_login" includeIn="login">
+			<s:label>{data.login}</s:label>
+		</s:Button>
+		<s:Image id="user_picture" includeIn="logged_in" />
+		<s:Label id="user_name" includeIn="logged_in" >
+		</s:Label>
+		<s:Button includeIn="logged_in">
+			<s:label>{data.logout}</s:label>
+		</s:Button>
+		<!--<s:Button >
+			<s:label>{data.play}</s:label>
+		</s:Button>-->
+	</s:Group>
 </views:AView>

@@ -10,6 +10,7 @@
 			<play>Begin !</play>
 		</home>
 		<login>
+			<facebook>This game uses Facebook, please login</facebook>
 			<login>login</login>
 			<logout>logout</logout>
 			<play>Play !</play>
@@ -28,6 +29,7 @@
 			<play>Commencer !</play>
 		</home>
 		<login>
+			<facebook>Ce jeu utilise Facebook, connecte-toi</facebook>
 			<login>Connexion</login>
 			<logout>Deconnexion</logout>
 			<play>Jouer !</play>

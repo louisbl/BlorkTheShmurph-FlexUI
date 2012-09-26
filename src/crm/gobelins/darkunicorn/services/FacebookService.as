@@ -11,32 +11,18 @@ package crm.gobelins.darkunicorn.services
 	public class FacebookService extends Actor
 	{
 		public var fb_session : FacebookSession;
+		public var permissions : Array;
+		public var app_id : String;
 		
-		protected var getFacebook : HTTPService;
-		protected var _permissions : Array;
-		protected var _app_id : String;
-		
-		public function FacebookService()
-		{
-			getFacebook = new HTTPService();
-			getFacebook.url = "assets/facebook.xml";
-			getFacebook.addEventListener(ResultEvent.RESULT, _onResult);
+		public function initFacebook( ) : void {
+			FacebookMobile.init(app_id, _loginHandler);
 		}
 		
-		protected function _onResult(event:ResultEvent):void
-		{
-			getFacebook.removeEventListener(ResultEvent.RESULT, _onResult);
-			_app_id = getFacebook.lastResult.data.app_id;
-			_permissions = [];
-			_initFacebook();
-		}
-		
-		protected function _initFacebook( ) : void {
-			FacebookMobile.init(_app_id, _loginHandler);
+		public function loginFacebook( ) : void {
+			
 		}
 		
 		protected function _loginHandler( session : FacebookSession, fail : Object ) : void {
-			fb_session = session;
 		}
 	}
 }

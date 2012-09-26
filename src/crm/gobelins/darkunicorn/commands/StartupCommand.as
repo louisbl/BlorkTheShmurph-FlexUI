@@ -10,7 +10,7 @@ package crm.gobelins.darkunicorn.commands
 	public class StartupCommand extends SequenceCommand
 	{
 		override public function execute():void{
-			addCommand(LoadLangCommand);
+			addCommand(LoadDataCommand);
 			addCompletionListener(_onComplete);
 			super.execute();
 		}
