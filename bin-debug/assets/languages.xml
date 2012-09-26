@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+	<base_language>en</base_language>
+	<language lang="en">
+		<splash>
+			<start>Start !</start>
+		</splash>
+		<home>
+			<facebook>connexion</facebook>
+			<play>Begin !</play>
+		</home>
+		<login>
+			<login>login</login>
+			<logout>logout</logout>
+			<play>Play !</play>
+			<wait>Please wait...</wait>
+		</login>
+		<game>
+			<score>scores</score>
+		</game>
+	</language>
+	<language lang="fr">
+		<splash>
+			<start>Jouer !</start>
+		</splash>
+		<home>
+			<facebook>connexion</facebook>
+			<play>Commencer !</play>
+		</home>
+		<login>
+			<login>Connexion</login>
+			<logout>Deconnexion</logout>
+			<play>Jouer !</play>
+			<wait>Patience...</wait>
+		</login>
+		<game>
+			<score>scores</score>
+		</game>
+	</language>
+</data>
