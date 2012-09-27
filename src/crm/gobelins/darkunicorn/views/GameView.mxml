@@ -3,17 +3,22 @@
 			 xmlns:s="library://ns.adobe.com/flex/spark" xmlns:views="crm.gobelins.darkunicorn.views.*"
 			 currentState="playing"
 			 creationComplete="_init()"
+			 viewDeactivate="_unload()"
 			 backgroundAlpha="0.0"
 			 visible="true">
 	<fx:Script>
 		<![CDATA[
 			import com.gobelins.DarkUnicorn.api.IGameCore;
+			
 			import org.osflash.signals.Signal;
+			
+			import spark.events.ViewNavigatorEvent;
 			
 			public var finish : Signal;
 			
 			protected function _init() : void {
 				finish = new Signal(int);
+				swf1.load("game_core.swf");
 			}
 			
 			protected function _on_paused():void
@@ -35,6 +40,13 @@
 					(swf1.content as IGameCore ).start();
 			}
 			
+			protected function _unload():void
+			{
+				if( swf1.content != null) {					
+					(swf1.content as IGameCore ).pause();
+				}
+			}
+			
 		]]>
 	</fx:Script>
 	
@@ -45,7 +57,7 @@
 		<s:State name="paused" enterState="_on_paused()"/>
 		<s:State name="playing" enterState="_on_playing()"/>
 	</views:states>
-	<s:SWFLoader id="swf1" source="game_core.swf" />	
+	<s:SWFLoader id="swf1" autoLoad="false" />	
 	<s:Button id="pause" includeIn="playing" click="{currentState='paused'}">
 		<s:label>{resourceManager.getString('game','pause')}</s:label>
 	</s:Button>
