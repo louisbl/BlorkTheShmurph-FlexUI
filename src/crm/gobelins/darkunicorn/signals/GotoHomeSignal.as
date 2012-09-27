@@ -4,9 +4,5 @@ package crm.gobelins.darkunicorn.signals
 	
 	public class GotoHomeSignal extends Signal
 	{
-		public function GotoHomeSignal(...parameters)
-		{
-			super(parameters);
-		}
 	}
 }

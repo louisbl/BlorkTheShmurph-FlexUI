@@ -28,61 +28,46 @@ package crm.gobelins.darkunicorn.views
 		[Inject]
 		public var score_serv : ScoreService;
 		[Inject]
-		public var local_logged_in_signal : LocalLoggedInSignal;
-		[Inject]
-		public var fb_logged_in_signal : FbLoggedInSignal;
-		[Inject]
-		public var fb_logged_out_signal : FbLoggedOutSignal;
-		[Inject]
 		public var home_sig : GotoHomeSignal;
 		
 		override public function onRegister():void{
-			fb_logged_in_signal.add(_onFbLoggedIn);
-			fb_logged_out_signal.add(_onFbLoggedOut);
-			local_logged_in_signal.add(_onLocalLoggedIn);
+			view.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE,_onStateChanged);
+
+			fb_serv.logged_out_signal.add(_onLoggedOut);
+			score_serv.logged_in_signal.add(_onLoggedIn);
 			
 			fb_serv.testThenInit();
-			
-			view.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE,_onStateChanged);
 		}
 		
-		private function _onLocalLoggedIn( user : UserVo ):void
+		protected function _onLoggedIn( user : UserVo ):void
 		{
 			view.data = user;
-			view.onLocalLoggedIn();
+			view.onLoggedIn();
 			view.btn_play.addEventListener(MouseEvent.CLICK, _onHomeClicked );
+			view.btn_logout.addEventListener(MouseEvent.CLICK, _onLogoutClicked );
 		}
 		
 		protected function _onStateChanged(event:StateChangeEvent):void
 		{
 			if( event.newState == "local" )
-				view.btn_nickname.addEventListener( MouseEvent.CLICK,_onNicknameClicked);			
+				view.btn_nickname.addEventListener( MouseEvent.CLICK,_onNicknameClicked);
 		}
 		
 		protected function _onNicknameClicked(event:MouseEvent):void
 		{
+			view.btn_nickname.removeEventListener( MouseEvent.CLICK,_onNicknameClicked);
 			score_serv.setUser( view.nickname.text );
 		}
 		
 		override public function onRemove():void{
-			fb_logged_in_signal.remove(_onFbLoggedIn);
-			fb_logged_out_signal.remove(_onFbLoggedOut);
+			fb_serv.logged_out_signal.remove(_onLoggedOut);
 		}
 		
-		protected function _onFbLoggedOut():void
+		protected function _onLoggedOut():void
 		{
 			trace("LoginMediator._onFbLoggedOut()");
-			view.onFbLoggedOut();
+			view.onLoggedOut();
 			view.btn_login.addEventListener(MouseEvent.CLICK,_onLoginClicked);
-		}
-		
-		protected function _onFbLoggedIn( data : UserVo ):void
-		{
-			view.data = data;
-			view.onFbLoggedIn();
-			view.btn_play.addEventListener(MouseEvent.CLICK, _onHomeClicked );
-			view.btn_logout.addEventListener(MouseEvent.CLICK, _onLogoutClicked );
-			trace("LoginMediator._onFbLoggedIn(session)");
 		}
 		
 		protected function _onHomeClicked(event:MouseEvent):void
@@ -99,8 +84,15 @@ package crm.gobelins.darkunicorn.views
 		
 		protected function _onLoginClicked(event:MouseEvent):void
 		{
+			view.btn_cancel.addEventListener(MouseEvent.CLICK,_onCancelClicked);
 			view.btn_login.removeEventListener(MouseEvent.CLICK,_onLoginClicked);
 			fb_serv.loginFacebook(view.login_vo);
+		}
+		
+		protected function _onCancelClicked(event:MouseEvent):void
+		{
+			view.btn_cancel.removeEventListener(MouseEvent.CLICK,_onCancelClicked);
+			view.btn_login.addEventListener(MouseEvent.CLICK,_onLoginClicked);	
 		}
 		
 	}

@@ -11,14 +11,11 @@ package crm.gobelins.darkunicorn
 	import crm.gobelins.darkunicorn.services.ScoreService;
 	import crm.gobelins.darkunicorn.signals.ChangeViewSignal;
 	import crm.gobelins.darkunicorn.signals.ErrorSignal;
-	import crm.gobelins.darkunicorn.signals.FbLoggedInSignal;
-	import crm.gobelins.darkunicorn.signals.FbLoggedOutSignal;
 	import crm.gobelins.darkunicorn.signals.GotoEndSignal;
 	import crm.gobelins.darkunicorn.signals.GotoFbSignal;
 	import crm.gobelins.darkunicorn.signals.GotoGameSignal;
 	import crm.gobelins.darkunicorn.signals.GotoHomeSignal;
 	import crm.gobelins.darkunicorn.signals.GotoScoreSignal;
-	import crm.gobelins.darkunicorn.signals.LocalLoggedInSignal;
 	import crm.gobelins.darkunicorn.views.AView;
 	import crm.gobelins.darkunicorn.views.EndMediator;
 	import crm.gobelins.darkunicorn.views.EndView;
@@ -29,6 +26,8 @@ package crm.gobelins.darkunicorn
 	import crm.gobelins.darkunicorn.views.HomeView;
 	import crm.gobelins.darkunicorn.views.LoginMediator;
 	import crm.gobelins.darkunicorn.views.LoginView;
+	import crm.gobelins.darkunicorn.views.ScoreMediator;
+	import crm.gobelins.darkunicorn.views.ScoreView;
 	import crm.gobelins.darkunicorn.views.SplashMediator;
 	import crm.gobelins.darkunicorn.views.SplashView;
 	import crm.gobelins.darkunicorn.views.ViewManager;
@@ -58,18 +57,14 @@ package crm.gobelins.darkunicorn
 			signalCommandMap.mapSignalClass(GotoScoreSignal,GotoScoreCommand);
 			
 			injector.mapSingleton(ChangeViewSignal);
-			
-			
-			injector.mapSingleton(FbLoggedInSignal);
-			injector.mapSingleton(FbLoggedOutSignal);
-			injector.mapSingleton(LocalLoggedInSignal);
-			
+
 			mediatorMap.mapView(GameView, GameMediator );
 			mediatorMap.mapView(ViewManager,ViewManagerMediator);
 			mediatorMap.mapView(SplashView,SplashMediator);
 			mediatorMap.mapView(HomeView,HomeMediator);
 			mediatorMap.mapView(LoginView,LoginMediator);
 			mediatorMap.mapView(EndView,EndMediator);
+			mediatorMap.mapView(ScoreView,ScoreMediator);
 			
 			var vm : ViewManager = new ViewManager();
 			vm.firstView = AView;

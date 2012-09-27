@@ -4,9 +4,5 @@ package crm.gobelins.darkunicorn.signals
 	
 	public class GotoGameSignal extends Signal
 	{
-		public function GotoGameSignal(...parameters)
-		{
-			super(parameters);
-		}
 	}
 }
