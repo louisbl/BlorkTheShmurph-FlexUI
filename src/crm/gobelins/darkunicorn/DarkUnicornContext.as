@@ -1,11 +1,6 @@
 package crm.gobelins.darkunicorn
 {
 	import crm.gobelins.darkunicorn.commands.ErrorCommand;
-	import crm.gobelins.darkunicorn.commands.FbGetScoreCommand;
-	import crm.gobelins.darkunicorn.commands.FbInitCommand;
-	import crm.gobelins.darkunicorn.commands.FbLoginCommand;
-	import crm.gobelins.darkunicorn.commands.FbLogoutCommand;
-	import crm.gobelins.darkunicorn.commands.FbSendScoreCommand;
 	import crm.gobelins.darkunicorn.commands.GotoEndCommand;
 	import crm.gobelins.darkunicorn.commands.GotoFbCommand;
 	import crm.gobelins.darkunicorn.commands.GotoGameCommand;
@@ -13,20 +8,17 @@ package crm.gobelins.darkunicorn
 	import crm.gobelins.darkunicorn.commands.GotoScoreCommand;
 	import crm.gobelins.darkunicorn.commands.GotoSplashCommand;
 	import crm.gobelins.darkunicorn.services.FbService;
+	import crm.gobelins.darkunicorn.services.ScoreService;
 	import crm.gobelins.darkunicorn.signals.ChangeViewSignal;
 	import crm.gobelins.darkunicorn.signals.ErrorSignal;
-	import crm.gobelins.darkunicorn.signals.FbGetScoreSignal;
-	import crm.gobelins.darkunicorn.signals.FbInitSignal;
 	import crm.gobelins.darkunicorn.signals.FbLoggedInSignal;
 	import crm.gobelins.darkunicorn.signals.FbLoggedOutSignal;
-	import crm.gobelins.darkunicorn.signals.FbLoginSignal;
-	import crm.gobelins.darkunicorn.signals.FbLogoutSignal;
-	import crm.gobelins.darkunicorn.signals.FbSendScoreSignal;
 	import crm.gobelins.darkunicorn.signals.GotoEndSignal;
 	import crm.gobelins.darkunicorn.signals.GotoFbSignal;
 	import crm.gobelins.darkunicorn.signals.GotoGameSignal;
 	import crm.gobelins.darkunicorn.signals.GotoHomeSignal;
 	import crm.gobelins.darkunicorn.signals.GotoScoreSignal;
+	import crm.gobelins.darkunicorn.signals.LocalLoggedInSignal;
 	import crm.gobelins.darkunicorn.views.AView;
 	import crm.gobelins.darkunicorn.views.EndMediator;
 	import crm.gobelins.darkunicorn.views.EndView;
@@ -55,6 +47,7 @@ package crm.gobelins.darkunicorn
 		
 		override public function startup() : void {
 			injector.mapSingleton(FbService);
+			injector.mapSingleton(ScoreService);
 			
 			signalCommandMap.mapSignalClass(ErrorSignal,ErrorCommand);
 			signalCommandMap.mapSignalClass(GotoSplashSignal,GotoSplashCommand);
@@ -69,12 +62,7 @@ package crm.gobelins.darkunicorn
 			
 			injector.mapSingleton(FbLoggedInSignal);
 			injector.mapSingleton(FbLoggedOutSignal);
-			
-			signalCommandMap.mapSignalClass(FbLoginSignal,FbLoginCommand);
-			signalCommandMap.mapSignalClass(FbInitSignal,FbInitCommand);
-			signalCommandMap.mapSignalClass(FbLogoutSignal,FbLogoutCommand);
-			signalCommandMap.mapSignalClass(FbSendScoreSignal,FbSendScoreCommand);
-			signalCommandMap.mapSignalClass(FbGetScoreSignal,FbGetScoreCommand);
+			injector.mapSingleton(LocalLoggedInSignal);
 			
 			mediatorMap.mapView(GameView, GameMediator );
 			mediatorMap.mapView(ViewManager,ViewManagerMediator);

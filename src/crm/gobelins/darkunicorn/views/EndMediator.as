@@ -1,6 +1,6 @@
 package crm.gobelins.darkunicorn.views
 {
-	import crm.gobelins.darkunicorn.signals.FbGetScoreSignal;
+	import crm.gobelins.darkunicorn.services.ScoreService;
 	import crm.gobelins.darkunicorn.signals.GotoGameSignal;
 	import crm.gobelins.darkunicorn.signals.GotoHomeSignal;
 	import crm.gobelins.darkunicorn.signals.GotoScoreSignal;
@@ -16,7 +16,7 @@ package crm.gobelins.darkunicorn.views
 		[Inject]
 		public var game_sig : GotoGameSignal;
 		[Inject]
-		public var score_sig : FbGetScoreSignal;
+		public var score_serv : ScoreService;
 		[Inject]
 		public var home_sig : GotoHomeSignal;
 		
@@ -41,7 +41,7 @@ package crm.gobelins.darkunicorn.views
 		protected function _onScoreClicked(event:MouseEvent):void
 		{
 			view.btn_halloffame.removeEventListener(MouseEvent.CLICK,_onScoreClicked);
-			score_sig.dispatch();
+			score_serv.getAllScores();
 		}
 		
 		protected function _onPlayClicked(event:MouseEvent):void

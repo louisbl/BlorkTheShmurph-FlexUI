@@ -3,8 +3,8 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark"
 			   applicationDPI="160"
 			   xmlns:darkunicorn="crm.gobelins.darkunicorn.*"
-			   backgroundAlpha="0.0"
 			   frameRate="60"
+			   backgroundAlpha="0.0"
 			   addedToStage="_init()">
 	<fx:Declarations>
 		<!-- Placer ici les éléments non visuels (services et objets de valeur, par exemple).
@@ -13,12 +13,13 @@
 	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
-			import mx.core.IVisualElement;
-			
 			import net.hires.debug.Stats;
 			protected function _init():void
 			{
-				//stage.addChild( new Stats() );
+				var s : Stats;
+				s = new Stats();
+				s.x = stage.stageWidth - 70;
+				stage.addChild( s );
 			}
 			
 		]]>

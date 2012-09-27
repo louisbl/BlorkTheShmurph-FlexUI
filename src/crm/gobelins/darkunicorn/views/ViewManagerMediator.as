@@ -1,7 +1,7 @@
 package crm.gobelins.darkunicorn.views
 {
 	import crm.gobelins.darkunicorn.models.ChangeViewVo;
-	import crm.gobelins.darkunicorn.services.FbUserVo;
+	import crm.gobelins.darkunicorn.services.UserVo;
 	import crm.gobelins.darkunicorn.signals.ChangeViewSignal;
 	import crm.gobelins.darkunicorn.signals.GotoEndSignal;
 	import crm.gobelins.darkunicorn.signals.GotoFbSignal;

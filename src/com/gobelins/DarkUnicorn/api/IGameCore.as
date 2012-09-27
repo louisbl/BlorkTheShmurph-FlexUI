@@ -1,4 +1,4 @@
-package crm.gobelins.darkunicorn
+package com.gobelins.DarkUnicorn.api
 {
 	/**
 	 * @author Tony Beltramelli - www.tonybeltramelli.com
@@ -6,6 +6,6 @@ package crm.gobelins.darkunicorn
 	public interface IGameCore {
 		function start() : void;
 		function startAt(l : Number) : void;
-		function stop() : void;
+		function pause() : void;
 	}
 }

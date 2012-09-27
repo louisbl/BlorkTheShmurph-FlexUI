@@ -1,6 +1,7 @@
 package crm.gobelins.darkunicorn.views
 {
-	import crm.gobelins.darkunicorn.signals.FbSendScoreSignal;
+	import crm.gobelins.darkunicorn.services.FbService;
+	import crm.gobelins.darkunicorn.services.ScoreService;
 	import crm.gobelins.darkunicorn.signals.GotoEndSignal;
 	import crm.gobelins.darkunicorn.signals.GotoFbSignal;
 	import crm.gobelins.darkunicorn.signals.GotoHomeSignal;
@@ -18,7 +19,7 @@ package crm.gobelins.darkunicorn.views
 		[Inject]
 		public var home_sig : GotoHomeSignal;
 		[Inject]
-		public var send_score_sig : FbSendScoreSignal;
+		public var score_serv : ScoreService;
 		
 		override public function onRegister():void{
 			view.finish.add(_onFinish);
@@ -42,7 +43,8 @@ package crm.gobelins.darkunicorn.views
 		protected function _onFinish( score : int ) : void {
 			view.removeEventListener(StateChangeEvent.CURRENT_STATE_CHANGE, _onStateChanged );
 			view.finish.remove(_onFinish);
-			send_score_sig.dispatch( score );
+			
+			score_serv.setScore( score );
 		}
 		
 		protected function _onCancelClicked(event:MouseEvent):void

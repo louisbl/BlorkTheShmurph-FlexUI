@@ -4,9 +4,9 @@ package crm.gobelins.darkunicorn.signals
 	
 	import org.osflash.signals.Signal;
 	
-	public class FbLoggedInSignal extends Signal
+	public class LocalLoggedInSignal extends Signal
 	{
-		public function FbLoggedInSignal()
+		public function LocalLoggedInSignal()
 		{
 			super(UserVo);
 		}

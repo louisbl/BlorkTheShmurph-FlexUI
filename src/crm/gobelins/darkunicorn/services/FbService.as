@@ -1,5 +1,7 @@
 package crm.gobelins.darkunicorn.services
 {
+	import air.net.URLMonitor;
+	
 	import com.facebook.graph.FacebookMobile;
 	import com.facebook.graph.data.FacebookSession;
 	
@@ -8,6 +10,10 @@ package crm.gobelins.darkunicorn.services
 	import crm.gobelins.darkunicorn.signals.FbLoggedOutSignal;
 	import crm.gobelins.darkunicorn.signals.GotoEndSignal;
 	import crm.gobelins.darkunicorn.signals.GotoScoreSignal;
+	
+	import flash.events.StatusEvent;
+	import flash.net.NetworkInfo;
+	import flash.net.URLRequest;
 	
 	import mx.collections.ArrayCollection;
 	import mx.resources.ResourceManager;
@@ -25,45 +31,97 @@ package crm.gobelins.darkunicorn.services
 		[Inject]
 		public var score_sig : GotoScoreSignal;
 		
-		protected var _user_data : FbUserVo;
+		protected var _user_data : UserVo;
 		protected var _app_id : String;
 		protected var _permissions : Array;
+		protected var _connected : Boolean;
+		protected var _init : Boolean;
 		
 		public function FbService() {
 			_app_id = ResourceManager.getInstance().getString("facebook","app_id");
-			_permissions = ResourceManager.getInstance().getStringArray("facebook","permissions");			
+			_permissions = ResourceManager.getInstance().getStringArray("facebook","permissions");	
+		}
+		
+		public function isEnabled() : Boolean {
+			return _init;
+		}
+		
+		protected function _onStatusEvent(event:StatusEvent):void
+		{
+			var evt : StatusEvent = event;
+			trace( ">>onStatusEvent::evt.code=" + evt.code );
+			if( evt.code == "Service.available" ){
+				_connected = true;
+				if( !_init )
+					initFacebook();
+			}else{
+				_connected = false;
+				_loginHandler(null,true);
+			}
+		}
+		
+		public function testThenInit( ) : void {
+			var urlMonitor : URLMonitor;
+			var urlRequest : URLRequest = new URLRequest( "http://m.facebook.com" );
+			urlMonitor = new URLMonitor( urlRequest );
+			urlMonitor.addEventListener( StatusEvent.STATUS, _onStatusEvent );
+			urlMonitor.start();
 		}
 		
 		public function initFacebook( ) : void {
-			_user_data = new FbUserVo();
-			FacebookMobile.init(_app_id, _loginHandler);
+			_user_data = new UserVo();
+			if( _connected ){
+				FacebookMobile.init(_app_id, _initHandler);
+			}else
+				_loginHandler(null,true);
+		}
+		
+		private function _initHandler(session : FacebookSession, success : Boolean ):void
+		{
+			if( session || success )
+				_init = true;
+			logged_out_sig.dispatch();
 		}
 		
 		public function loginFacebook( vo : FbLoginVo ) : void {
-			FacebookMobile.login(_loginHandler, vo.stage, _permissions, vo.view );
+			if( !_init )
+				initFacebook();
+			else
+				if( _connected )
+					FacebookMobile.login(_loginHandler, vo.stage, _permissions, vo.view );
+				else
+					_loginHandler(null,true);
 		}
 		
 		public function sendScore(score:int):void
 		{
-			_user_data.score = score;
-			var params : Object = {};
-			params.access_token = FacebookMobile.getSession().accessToken;
-			params.score = _user_data.score;
-			FacebookMobile.api("/"+_user_data.user_uid+"/scores",_sendScoreHandler,params,"POST");
+			if( _connected && FacebookMobile.getSession() ){				
+				_user_data.score = score;
+				var params : Object = {};
+				params.access_token = FacebookMobile.getSession().accessToken;
+				params.score = _user_data.score;
+				FacebookMobile.api("/"+_user_data.user_uid+"/scores",_sendScoreHandler,params,"POST");
+			} else {
+				_sendScoreHandler(false,false);
+			}
 		}
 		
 		public function getLeaderBoard() : void{
-			var params : Object = {};
-			params.access_token = FacebookMobile.getSession().accessToken;
-			FacebookMobile.api("/"+_app_id+"/scores",_leaderBoardHandler,params);
+			if( _connected && FacebookMobile.getSession() ){
+				var params : Object = {};
+				params.access_token = FacebookMobile.getSession().accessToken;
+				FacebookMobile.api("/"+_app_id+"/scores",_leaderBoardHandler,params);
+			} else {
+				_leaderBoardHandler(null,false);
+			}
 		}
 		
 		private function _leaderBoardHandler( result : Array, success : Boolean ) : void {
 			var data : ArrayCollection = new ArrayCollection();
-			var usr_vo : FbUserVo;
+			var usr_vo : UserVo;
 			for each (var obj : Object in result) {
 				if( obj.application.id == _app_id ) {
-					usr_vo = new FbUserVo();
+					usr_vo = new UserVo();
 					usr_vo.score = obj.score;
 					usr_vo.user_name = obj.user.name;
 					usr_vo.user_uid = obj.user.id;
@@ -75,7 +133,10 @@ package crm.gobelins.darkunicorn.services
 		}
 		
 		public function logoutFacebook() : void {
-			FacebookMobile.logout( _logoutHandler );
+			if( _connected && _init )
+				FacebookMobile.logout( _logoutHandler );
+			else
+				_logoutHandler( false );
 		}
 		
 		protected function _logoutHandler( success : Boolean ):void

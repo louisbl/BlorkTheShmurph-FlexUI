@@ -1,6 +1,6 @@
 package crm.gobelins.darkunicorn.signals
 {
-	import crm.gobelins.darkunicorn.services.FbUserVo;
+	import crm.gobelins.darkunicorn.services.UserVo;
 	
 	import org.osflash.signals.Signal;
 	
@@ -8,7 +8,7 @@ package crm.gobelins.darkunicorn.signals
 	{
 		public function GotoEndSignal()
 		{
-			super(FbUserVo);
+			super(UserVo);
 		}
 	}
 }

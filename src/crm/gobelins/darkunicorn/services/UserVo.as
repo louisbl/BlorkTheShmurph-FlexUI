@@ -1,7 +1,7 @@
 package crm.gobelins.darkunicorn.services
 {
 	[Bindable]
-	public class FbUserVo
+	public class UserVo
 	{
 		public var user_uid : String;
 		public var user_name : String;
