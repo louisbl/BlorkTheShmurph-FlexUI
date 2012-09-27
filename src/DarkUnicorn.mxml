@@ -1,11 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
-			   xmlns:s="library://ns.adobe.com/flex/spark" applicationDPI="160" xmlns:darkunicorn="crm.gobelins.darkunicorn.*"
-			   >
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   applicationDPI="160"
+			   xmlns:darkunicorn="crm.gobelins.darkunicorn.*"
+			   backgroundAlpha="0.0"
+			   frameRate="60"
+			   addedToStage="_init()">
 	<fx:Declarations>
-		<!-- Placer ici les éléments non visuels (services et objets de valeur, par exemple). -->
+		<!-- Placer ici les éléments non visuels (services et objets de valeur, par exemple).
+		-->
 	<darkunicorn:DarkUnicornContext contextView="{this}" />
 	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import mx.core.IVisualElement;
+			
+			import net.hires.debug.Stats;
+			protected function _init():void
+			{
+				//stage.addChild( new Stats() );
+			}
+			
+		]]>
+	</fx:Script>
 	
 	<fx:Metadata>
 		[ResourceBundle("splash")]

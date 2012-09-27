@@ -23,7 +23,6 @@ package crm.gobelins.darkunicorn.views
 		override public function onRegister():void{
 			view.finish.add(_onFinish);
 			view.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE, _onStateChanged );
-			view.btn_score.addEventListener(MouseEvent.CLICK,_onScoreClicked);
 		}
 		
 		protected function _onScoreClicked(event:MouseEvent):void
@@ -36,6 +35,7 @@ package crm.gobelins.darkunicorn.views
 			if( event.newState == "paused" ){
 				view.removeEventListener(StateChangeEvent.CURRENT_STATE_CHANGE, _onStateChanged );
 				view.btn_cancel.addEventListener(MouseEvent.CLICK, _onCancelClicked );
+				view.btn_score.addEventListener(MouseEvent.CLICK,_onScoreClicked);
 			}
 		}
 		

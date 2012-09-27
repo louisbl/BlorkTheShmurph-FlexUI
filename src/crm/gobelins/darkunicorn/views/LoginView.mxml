@@ -56,7 +56,7 @@
 		<s:Button id="btn_logout" includeIn="logged_in" click="{currentState='wait'}">
 			<s:label>{resourceManager.getString('login','logout')}</s:label>
 		</s:Button>
-		<s:Button id="btn_play" includeIn="logged_in">
+		<s:Button id="btn_play" excludeFrom="wait">
 			<s:label>{resourceManager.getString('login','play')}</s:label>
 		</s:Button>
 	</s:Group>

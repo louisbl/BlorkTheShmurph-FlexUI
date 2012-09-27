@@ -2,15 +2,43 @@
 <views:AView xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			 xmlns:s="library://ns.adobe.com/flex/spark" xmlns:views="crm.gobelins.darkunicorn.views.*"
 			 currentState="playing"
-			 creationComplete="_init()">
+			 creationComplete="_init()"
+			 visible="false">
 	<fx:Script>
 		<![CDATA[
+			import crm.gobelins.darkunicorn.IGameCore;
+			
+			import flash.sensors.Accelerometer;
+			
+			import flashx.textLayout.formats.BackgroundColor;
+			
+			import mx.events.FlexEvent;
+			
 			import org.osflash.signals.Signal;
 			public var finish : Signal;
 			
 			protected function _init() : void {
 				finish = new Signal(int);
 			}
+			
+			protected function _on_paused():void
+			{
+				parentApplication.visible = true;
+				visible = true;
+				//menu_pause.visible = true;
+				if( swf1.content != null)
+					(swf1.content as IGameCore ).stop();
+			}
+			
+			protected function _on_playing():void
+			{
+				parentApplication.visible = false;
+				visible = false;
+				//menu_pause.visible = false;
+				if( swf1.content != null)
+					(swf1.content as IGameCore ).start();
+			}
+			
 		]]>
 	</fx:Script>
 	
@@ -18,24 +46,25 @@
 		<!-- Placer ici les éléments non visuels (services et objets de valeur, par exemple). -->
 	</fx:Declarations>
 	<views:states>
-		<s:State name="paused"/>
-		<s:State name="playing"/>
+		<s:State name="paused" enterState="_on_paused()"/>
+		<s:State name="playing" enterState="_on_playing()"/>
 	</views:states>
+	<s:SWFLoader id="swf1" source="game_core.swf"/>	
 	<s:Button id="pause" includeIn="playing" click="{currentState='paused'}">
 		<s:label>{resourceManager.getString('game','pause')}</s:label>
 	</s:Button>
-	<s:Group>
+	<s:Group includeIn="paused" id="menu_pause">
 		<s:layout>
 			<s:VerticalLayout paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" gap="5" 
 							  horizontalAlign="center" verticalAlign="top"/>
 		</s:layout>
-		<s:Button id="btn_resume" includeIn="paused" click="{currentState='playing'}">
+		<s:Button id="btn_resume" click="{currentState='playing'}">
 			<s:label>{resourceManager.getString('game','resume')}</s:label>
 		</s:Button>
-		<s:Button id="btn_cancel" includeIn="paused">
+		<s:Button id="btn_cancel">
 			<s:label>{resourceManager.getString('game','cancel')}</s:label>
 		</s:Button>
-		<s:Button id="btn_score" includeIn="playing">
+		<s:Button id="btn_score">
 			<s:label>DEBUG score = 1200</s:label>
 		</s:Button>
 	</s:Group>

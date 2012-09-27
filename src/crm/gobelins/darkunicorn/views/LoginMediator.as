@@ -52,6 +52,7 @@ package crm.gobelins.darkunicorn.views
 		{
 			trace("LoginMediator._onFbLoggedOut()");
 			view.onFbLoggedOut();
+			view.btn_play.addEventListener(MouseEvent.CLICK, _onHomeClicked );
 			view.btn_login.addEventListener(MouseEvent.CLICK,_onLoginClicked);
 		}
 		
@@ -59,8 +60,8 @@ package crm.gobelins.darkunicorn.views
 		{
 			view.data = data;
 			view.onFbLoggedIn();
-			view.btn_logout.addEventListener(MouseEvent.CLICK, _onLogoutClicked );
 			view.btn_play.addEventListener(MouseEvent.CLICK, _onHomeClicked );
+			view.btn_logout.addEventListener(MouseEvent.CLICK, _onLogoutClicked );
 			trace("LoginMediator._onFbLoggedIn(session)");
 		}
 		
