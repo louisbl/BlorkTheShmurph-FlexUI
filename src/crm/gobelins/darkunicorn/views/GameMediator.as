@@ -28,7 +28,8 @@ package crm.gobelins.darkunicorn.views
 		
 		protected function _onScoreClicked(event:MouseEvent):void
 		{
-			_onFinish( 1800 );
+			view.btn_score.removeEventListener(MouseEvent.CLICK,_onScoreClicked);
+			_onFinish( 3800 );
 		}
 		
 		protected function _onStateChanged(event:StateChangeEvent):void

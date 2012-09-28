@@ -6,20 +6,22 @@
 	</fx:Declarations>
 	<s:Group width="100%" height="100%">
 		<s:layout>
-			<s:VerticalLayout paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" gap="5" 
-							  horizontalAlign="center" verticalAlign="middle"/>
+			<s:HorizontalLayout horizontalAlign="center" verticalAlign="middle"/>
 		</s:layout>
-		<s:Button id="btn_play">
-			<s:label>{resourceManager.getString('end','play')}</s:label>
-		</s:Button>
-		<s:Image id="user_picture" source="{data.user_picture}"/>
-		<s:Label id="user_name" text="{data.user_name}"/>
-		<s:Label id="score" text="{data.score}"/>
-		<s:Button id="btn_halloffame">
-			<s:label>{resourceManager.getString('end','hall_of_fame')}</s:label>
-		</s:Button>
-		<s:Button id="btn_home">
-			<s:label>{resourceManager.getString('end','home')}</s:label>
-		</s:Button>
+		<s:Group width="50%" height="100%">
+			<s:layout>
+				<s:VerticalLayout horizontalAlign="center" verticalAlign="middle"/>
+			</s:layout>
+			<s:Button id="btn_play">
+				<s:label>{resourceManager.getString('end','play')}</s:label>
+			</s:Button>
+			<s:Button id="btn_halloffame">
+				<s:label>{resourceManager.getString('end','hall_of_fame')}</s:label>
+			</s:Button>
+			<s:Button id="btn_home">
+				<s:label>{resourceManager.getString('end','home')}</s:label>
+			</s:Button>
+		</s:Group>
+		<views:UserGroup data="{data}" currentState="score"/>
 	</s:Group>
 </views:AView>

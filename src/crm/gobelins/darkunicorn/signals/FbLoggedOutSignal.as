@@ -4,9 +4,5 @@ package crm.gobelins.darkunicorn.signals
 	
 	public class FbLoggedOutSignal extends Signal
 	{
-		public function FbLoggedOutSignal(...parameters)
-		{
-			super(parameters);
-		}
 	}
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" width="300" height="50" currentState="best">
+	<fx:Declarations>
+		<fx:Object id="data"/>
+	</fx:Declarations>
+	<s:states>
+		<s:State name="score"/>
+		<s:State name="best"/>
+	</s:states>
+	<s:layout>
+		<s:HorizontalLayout horizontalAlign="center" verticalAlign="middle"/>
+	</s:layout>
+	<s:Image source="{data.user_picture}" />
+	<s:Group width="250" height="100%" >
+		<s:layout>
+			<s:VerticalLayout horizontalAlign="left" verticalAlign="middle"/>
+		</s:layout>
+		<s:Label text="{data.user_name}"/>
+		<s:Label includeIn="score" text="{resourceManager.getString('home','score')} {data.score}"/>
+		<s:Label includeIn="best" text="{resourceManager.getString('home','best_score')} {data.score}"/>
+	</s:Group>  
+	
+</s:Group>

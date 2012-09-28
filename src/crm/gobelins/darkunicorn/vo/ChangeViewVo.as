@@ -1,4 +1,4 @@
-package crm.gobelins.darkunicorn.models
+package crm.gobelins.darkunicorn.vo
 {
 	public class ChangeViewVo
 	{

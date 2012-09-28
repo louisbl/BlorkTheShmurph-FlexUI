@@ -7,5 +7,11 @@ package crm.gobelins.darkunicorn.services
 		public var user_name : String;
 		public var user_picture : String;
 		public var score : int;
+		
+		public function UserVo() 
+		{
+			score = 0;
+			user_picture = "assets/default_picture.png";
+		}
 	}
 }

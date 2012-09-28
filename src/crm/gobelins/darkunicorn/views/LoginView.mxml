@@ -13,27 +13,29 @@
 			
 			public var login_vo:FbLoginVo;
 			
-			public function onFbLoggedIn():void
+			public function onLoggedIn():void
 			{
-				currentState = "fb_logged_in";
+				currentState = "logged_in";
 			}
 			
-			public function onFbLoggedOut():void
+			public function onLoggedOut():void
 			{
 				currentState = "login";
 			}
 			
-			public function onLocalLoggedIn():void
-			{
-				currentState = "local_logged_in";
-			}
-			
 			protected function _onEnterState():void
 			{
+				if( login_vo != null ){
+					if( login_vo.view != null ){
+						login_vo.view.stop();
+						login_vo.view.dispose();
+						login_vo.view = null;
+					}
+				}
 				login_vo = new FbLoginVo();
 				login_vo.stage = stage;
 				login_vo.view = new StageWebView();
-				login_vo.view.viewPort = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
+				login_vo.view.viewPort = new Rectangle(0, 65, stage.stageWidth, stage.stageHeight);
 			}
 			
 		]]>
@@ -42,42 +44,44 @@
 		<!-- Placer ici les éléments non visuels (services et objets de valeur, par exemple). -->
 	</fx:Declarations>
 	<views:states>
-		<s:State name="fb_logged_in" />
-		<s:State name="local_logged_in" />
+		<s:State name="logged_in" />
 		<s:State name="login" enterState="_onEnterState()"/>
 		<s:State name="local" />
 		<s:State name="wait" />
 	</views:states>
+		<s:Button id="btn_cancel" includeIn="wait" click="{currentState='login'}">
+			<s:label>{resourceManager.getString('login','cancel')}</s:label>
+		</s:Button>
 	<s:Group width="100%" height="100%">
 		<s:layout>
-			<s:VerticalLayout paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" gap="5" 
-							  horizontalAlign="center" verticalAlign="middle"/>
+			<s:VerticalLayout horizontalAlign="center" verticalAlign="middle"/>
 		</s:layout>
+		
 		<s:Label includeIn="wait" text="{resourceManager.getString('login','wait')}"/>
+		
 		<s:Label includeIn="login" text="{resourceManager.getString('login','facebook')}"/>
 		<s:Button id="btn_login" includeIn="login" click="{currentState='wait'}">
 			<s:label>{resourceManager.getString('login','login')}</s:label>
 		</s:Button>
-		<s:Group width="100%">
+		
+		<views:UserGroup includeIn="logged_in" data="{data}"/>
+		<s:Group includeIn="logged_in">
 			<s:layout>
-				<s:HorizontalLayout paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" gap="5"  
-									horizontalAlign="center" verticalAlign="middle"/>
-			</s:layout>
-		<s:Image id="user_picture" includeIn="fb_logged_in" source="{data.user_picture}" />
-		<s:Label id="user_name" includeIn="fb_logged_in,local_logged_in" text="{data.user_name}"/>		
-		<s:Button id="btn_logout" includeIn="fb_logged_in" click="{currentState='wait'}">
+				<s:HorizontalLayout horizontalAlign="center" verticalAlign="middle"/>
+			</s:layout>			
+		<s:Button id="btn_logout" click="{currentState='wait'}">
 			<s:label>{resourceManager.getString('login','logout')}</s:label>
 		</s:Button>
-		</s:Group>  
+		<s:Button id="btn_play">
+			<s:label>{resourceManager.getString('login','play')}</s:label>
+		</s:Button>
+		</s:Group>
 		<s:Label includeIn="login" text="{resourceManager.getString('login','wo_facebook')}"/>
 		<s:Button id="btn_local" includeIn="login" click="{currentState='local'}">
 			<s:label>{resourceManager.getString('login','local')}</s:label>
 		</s:Button>
 		<s:Label includeIn="local" text="{resourceManager.getString('login','set_nickname')}"/>
-		<s:TextInput id="nickname" includeIn="local"/>
+		<s:TextInput id="nickname" includeIn="local" text="player"/>
 		<s:Button id="btn_nickname" includeIn="local" label="{resourceManager.getString('login','nickname')}"/>
-		<s:Button id="btn_play" includeIn="fb_logged_in,local_logged_in">
-			<s:label>{resourceManager.getString('login','play')}</s:label>
-		</s:Button>
 	</s:Group>
 </views:AView>
