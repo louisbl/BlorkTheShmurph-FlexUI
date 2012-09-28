@@ -2,10 +2,7 @@
 <views:AView xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			 xmlns:s="library://ns.adobe.com/flex/spark" xmlns:views="crm.gobelins.darkunicorn.views.*"
 			 currentState="playing"
-			 creationComplete="_init()"
-			 viewDeactivate="_unload()"
-			 backgroundAlpha="0.0"
-			 visible="true">
+			 backgroundAlpha="0.0">
 	<fx:Script>
 		<![CDATA[
 			import com.gobelins.DarkUnicorn.api.IGameCore;
@@ -14,37 +11,34 @@
 			
 			import spark.events.ViewNavigatorEvent;
 			
-			public var finish : Signal;
+			public var finish_signal : Signal = new Signal(int);
+			public var btn_cancel_signal : Signal = new Signal();
 			
-			protected function _init() : void {
-				finish = new Signal(int);
-				swf1.load("game_core.swf");
-			}
-			
-			protected function _on_paused():void
-			{
-				//parentApplication.visible = true;
-				//visible = true;
-				//menu_pause.visible = true;
-				if( swf1.content != null) {					
-					(swf1.content as IGameCore ).pause();
+			protected function _onPausedClicked() : void {
+				currentState = "paused";
+				if( _game_swf != null) {					
+					(_game_swf.content as IGameCore ).pause();
 				}
 			}
 			
-			protected function _on_playing():void
-			{
-				//parentApplication.visible = false;
-				//visible = false;
-				//menu_pause.visible = false;
-				if( swf1.content != null)
-					(swf1.content as IGameCore ).start();
+			protected function _onResumeClicked() : void{
+				currentState = "playing";				
+				if( _game_swf != null)
+					(_game_swf.content as IGameCore ).start();
 			}
 			
-			protected function _unload():void
-			{
-				if( swf1.content != null) {					
-					(swf1.content as IGameCore ).pause();
+			protected function _onScoreClicked() : void{
+				if( _game_swf != null) {					
+					(_game_swf.content as IGameCore ).pause();
 				}
+				finish_signal.dispatch(3900);
+			}
+			
+			protected function _onCancelClicked() : void{
+				if( _game_swf != null) {					
+					(_game_swf.content as IGameCore ).pause();
+				}
+				btn_cancel_signal.dispatch();
 			}
 			
 		]]>
@@ -54,25 +48,24 @@
 		<!-- Placer ici les éléments non visuels (services et objets de valeur, par exemple). -->
 	</fx:Declarations>
 	<views:states>
-		<s:State name="paused" enterState="_on_paused()"/>
-		<s:State name="playing" enterState="_on_playing()"/>
+		<s:State name="paused"/>
+		<s:State name="playing"/>
 	</views:states>
-	<s:SWFLoader id="swf1" autoLoad="false" />	
-	<s:Button id="pause" includeIn="playing" click="{currentState='paused'}">
+	<s:SWFLoader id="_game_swf" source="game_core.swf" />
+	<s:Button id="pause" includeIn="playing" click="_onPausedClicked()">
 		<s:label>{resourceManager.getString('game','pause')}</s:label>
 	</s:Button>
 	<s:Group includeIn="paused" id="menu_pause" width="100%" height="100%">
 		<s:layout>
-			<s:VerticalLayout paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" gap="5" 
-							  horizontalAlign="center" verticalAlign="middle"/>
+			<s:VerticalLayout horizontalAlign="center" verticalAlign="middle"/>
 		</s:layout>
-		<s:Button id="btn_resume" click="{currentState='playing'}">
+		<s:Button id="btn_resume" click="_onResumeClicked()">
 			<s:label>{resourceManager.getString('game','resume')}</s:label>
 		</s:Button>
-		<s:Button id="btn_cancel">
+		<s:Button id="btn_cancel" click="_onCancelClicked()">
 			<s:label>{resourceManager.getString('game','cancel')}</s:label>
 		</s:Button>
-		<s:Button id="btn_score">
+		<s:Button id="btn_score"  click="_onScoreClicked()">
 			<s:label>DEBUG score = 1200</s:label>
 		</s:Button>
 	</s:Group>

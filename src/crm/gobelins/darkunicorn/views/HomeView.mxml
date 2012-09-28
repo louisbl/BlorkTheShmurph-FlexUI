@@ -2,16 +2,43 @@
 <views:AView xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		xmlns:s="library://ns.adobe.com/flex/spark"
 		xmlns:views="crm.gobelins.darkunicorn.views.*"
-		title="HomeView">
-	<fx:Declarations>
-		<!-- Placer ici les éléments non visuels (services et objets de valeur, par exemple). -->
-	</fx:Declarations>
-	<views:UserGroup data="{data}" /> 
+		title="HomeView" xmlns:signals="org.osflash.signals.*"
+		backgroundAlpha="0.0">
+	
+	<fx:Script>
+		<![CDATA[
+			import org.osflash.signals.Signal;
+			
+			public var btn_play_signal : Signal = new Signal();
+			public var btn_logout_signal : Signal = new Signal();
+			
+			protected function btn_logout_clickHandler(event:MouseEvent):void
+			{
+				btn_logout_signal.dispatch();
+			}
+			
+			protected function btn_play_clickHandler(event:MouseEvent):void
+			{
+				btn_play_signal.dispatch();
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:Group width="100%">
+		<s:layout>
+			<s:HorizontalLayout horizontalAlign="left" verticalAlign="top"/>
+		</s:layout>	
+		<views:UserGroup data="{data}" /> 
+		<s:Button id="btn_logout" click="btn_logout_clickHandler(event)">
+			<s:label>{resourceManager.getString('login','logout')}</s:label>
+		</s:Button>
+	</s:Group>  
 	<s:Group width="100%" height="100%">
 		<s:layout>
 			<s:VerticalLayout horizontalAlign="center" verticalAlign="middle"/>
 		</s:layout>
-		<s:Button id="btn_play">
+		<s:Button id="btn_play" click="btn_play_clickHandler(event)">
 			<s:label>{resourceManager.getString('home','play')}</s:label>
 		</s:Button>
 	</s:Group>

@@ -1,11 +1,14 @@
 package crm.gobelins.darkunicorn.views
 {
+	import com.gobelins.DarkUnicorn.api.IGameCore;
+	
 	import crm.gobelins.darkunicorn.services.FbService;
 	import crm.gobelins.darkunicorn.services.ScoreService;
 	import crm.gobelins.darkunicorn.signals.GotoEndSignal;
 	import crm.gobelins.darkunicorn.signals.GotoFbSignal;
 	import crm.gobelins.darkunicorn.signals.GotoHomeSignal;
 	
+	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	
 	import mx.events.StateChangeEvent;
@@ -22,35 +25,26 @@ package crm.gobelins.darkunicorn.views
 		public var score_serv : ScoreService;
 		
 		override public function onRegister():void{
-			view.finish.add(_onFinish);
-			view.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE, _onStateChanged );
+			view.finish_signal.add(_onFinish);
+			view.btn_cancel_signal.add(_onCancelClicked);
 		}
 		
-		protected function _onScoreClicked(event:MouseEvent):void
+		override public function onRemove():void{
+			view.finish_signal.removeAll();
+			view.btn_cancel_signal.removeAll();
+		}
+		
+		protected function _onScoreClicked():void
 		{
-			view.btn_score.removeEventListener(MouseEvent.CLICK,_onScoreClicked);
 			_onFinish( 3800 );
 		}
 		
-		protected function _onStateChanged(event:StateChangeEvent):void
-		{
-			if( event.newState == "paused" ){
-				view.removeEventListener(StateChangeEvent.CURRENT_STATE_CHANGE, _onStateChanged );
-				view.btn_cancel.addEventListener(MouseEvent.CLICK, _onCancelClicked );
-				view.btn_score.addEventListener(MouseEvent.CLICK,_onScoreClicked);
-			}
-		}
-		
 		protected function _onFinish( score : int ) : void {
-			view.removeEventListener(StateChangeEvent.CURRENT_STATE_CHANGE, _onStateChanged );
-			view.finish.remove(_onFinish);
-			
 			score_serv.setScore( score );
 		}
 		
-		protected function _onCancelClicked(event:MouseEvent):void
+		protected function _onCancelClicked():void
 		{
-			view.btn_cancel.removeEventListener(MouseEvent.CLICK, _onCancelClicked );
 			home_sig.dispatch();
 		}
 	}

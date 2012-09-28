@@ -117,6 +117,8 @@ package crm.gobelins.darkunicorn.services
 				_connected = true;
 				if( !_init )
 					initFacebook();
+				else
+					logged_in_signal.dispatch(_user_data);
 			}else{
 				_connected = false;
 				_loginHandler(null,true);

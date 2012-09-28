@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <views:AView xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			 xmlns:s="library://ns.adobe.com/flex/spark" xmlns:views="crm.gobelins.darkunicorn.views.*"
+			 addedToStage="_init()"
+			 exitState="_onExit()"
 			 currentState="wait">
 	<fx:Script>
 		<![CDATA[
@@ -11,7 +13,15 @@
 			
 			import mx.events.FlexEvent;
 			
+			import org.osflash.signals.Signal;
+			
 			public var login_vo:FbLoginVo;
+			public var btn_nick_signal : Signal = new Signal(String);
+			public var btn_fb_login_signal : Signal = new Signal();
+			public var btn_logout_signal : Signal = new Signal();
+			public var btn_play_signal : Signal = new Signal();
+			
+			protected var _view_port_rect : Rectangle;
 			
 			public function onLoggedIn():void
 			{
@@ -22,8 +32,14 @@
 			{
 				currentState = "login";
 			}
+						
+			protected function _init() : void {
+				login_vo = new FbLoginVo();
+				login_vo.stage = stage;		
+				_view_port_rect = new Rectangle(0, 65, stage.stageWidth, stage.stageHeight);
+			}
 			
-			protected function _onEnterState():void
+			protected function _onExit():void
 			{
 				if( login_vo != null ){
 					if( login_vo.view != null ){
@@ -32,24 +48,60 @@
 						login_vo.view = null;
 					}
 				}
-				login_vo = new FbLoginVo();
-				login_vo.stage = stage;
-				login_vo.view = new StageWebView();
-				login_vo.view.viewPort = new Rectangle(0, 65, stage.stageWidth, stage.stageHeight);
+			}
+			
+			protected function _onFacebookWait():void{
+					login_vo.view = new StageWebView();
+					login_vo.view.viewPort = _view_port_rect;
+			}
+			
+			protected function _onCancelClicked() : void {
+				if( login_vo != null ){
+					if( login_vo.view != null ){
+						if( login_vo.view.stage != null ){
+							login_vo.view.stage = null;
+						}
+					}
+				}
+				currentState = "login";
+			}
+			
+			protected function _onFbLoginClicked() : void {
+				currentState="wait_facebook";
+				btn_fb_login_signal.dispatch();
+			}
+			
+			protected function _onLogoutClicked() : void{
+				currentState="wait";
+				btn_logout_signal.dispatch();
+			}
+			
+			protected function _onLocalLoginClicked() : void {
+				currentState = "local";
+			}
+			
+			protected function _onNickClicked():void
+			{
+				btn_nick_signal.dispatch(nickname.text);
+			}
+			
+			protected function _onPlayClicked():void
+			{
+				btn_play_signal.dispatch();
 			}
 			
 		]]>
 	</fx:Script>
 	<fx:Declarations>
-		<!-- Placer ici les éléments non visuels (services et objets de valeur, par exemple). -->
 	</fx:Declarations>
 	<views:states>
 		<s:State name="logged_in" />
-		<s:State name="login" enterState="_onEnterState()"/>
+		<s:State name="login"/>
 		<s:State name="local" />
 		<s:State name="wait" />
+		<s:State name="wait_facebook" enterState="_onFacebookWait()" />
 	</views:states>
-		<s:Button id="btn_cancel" includeIn="wait" click="{currentState='login'}">
+		<s:Button id="btn_cancel" includeIn="wait_facebook" click="_onCancelClicked()">
 			<s:label>{resourceManager.getString('login','cancel')}</s:label>
 		</s:Button>
 	<s:Group width="100%" height="100%">
@@ -57,10 +109,10 @@
 			<s:VerticalLayout horizontalAlign="center" verticalAlign="middle"/>
 		</s:layout>
 		
-		<s:Label includeIn="wait" text="{resourceManager.getString('login','wait')}"/>
+		<s:Label includeIn="wait, wait_facebook" text="{resourceManager.getString('login','wait')}"/>
 		
 		<s:Label includeIn="login" text="{resourceManager.getString('login','facebook')}"/>
-		<s:Button id="btn_login" includeIn="login" click="{currentState='wait'}">
+		<s:Button id="btn_login" includeIn="login" click="_onFbLoginClicked()">
 			<s:label>{resourceManager.getString('login','login')}</s:label>
 		</s:Button>
 		
@@ -69,19 +121,22 @@
 			<s:layout>
 				<s:HorizontalLayout horizontalAlign="center" verticalAlign="middle"/>
 			</s:layout>			
-		<s:Button id="btn_logout" click="{currentState='wait'}">
-			<s:label>{resourceManager.getString('login','logout')}</s:label>
-		</s:Button>
-		<s:Button id="btn_play">
-			<s:label>{resourceManager.getString('login','play')}</s:label>
-		</s:Button>
+			<s:Button id="btn_logout" click="_onLogoutClicked()">
+				<s:label>{resourceManager.getString('login','logout')}</s:label>
+			</s:Button>
+			<s:Button id="btn_play" click="_onPlayClicked()">
+				<s:label>{resourceManager.getString('login','play')}</s:label>
+			</s:Button>
 		</s:Group>
+		
 		<s:Label includeIn="login" text="{resourceManager.getString('login','wo_facebook')}"/>
-		<s:Button id="btn_local" includeIn="login" click="{currentState='local'}">
+		<s:Button id="btn_local" includeIn="login" click="_onLocalLoginClicked()">
 			<s:label>{resourceManager.getString('login','local')}</s:label>
 		</s:Button>
 		<s:Label includeIn="local" text="{resourceManager.getString('login','set_nickname')}"/>
 		<s:TextInput id="nickname" includeIn="local" text="player"/>
-		<s:Button id="btn_nickname" includeIn="local" label="{resourceManager.getString('login','nickname')}"/>
+		<s:Button id="btn_nickname" includeIn="local"
+				  label="{resourceManager.getString('login','nickname')}"
+				  click="_onNickClicked()"/>
 	</s:Group>
 </views:AView>

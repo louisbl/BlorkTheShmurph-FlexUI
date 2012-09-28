@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <views:AView xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			 xmlns:s="library://ns.adobe.com/flex/spark" xmlns:views="crm.gobelins.darkunicorn.views.*">
+	
+	<fx:Script>
+		<![CDATA[
+			import org.osflash.signals.Signal;
+			public var btn_play_signal : Signal = new Signal();
+			public var btn_home_signal : Signal = new Signal();
+			
+			protected function btn_play_clickHandler(event:MouseEvent):void
+			{
+				btn_play_signal.dispatch();
+			}
+			
+			protected function btn_home_clickHandler(event:MouseEvent):void
+			{
+				btn_home_signal.dispatch();
+			}
+			
+		]]>
+	</fx:Script>
+	
 	<fx:Declarations>
 		<!-- Placer ici les éléments non visuels (services et objets de valeur, par exemple). -->
 	</fx:Declarations>
@@ -12,10 +32,10 @@
 			<s:layout>
 				<s:VerticalLayout horizontalAlign="center" verticalAlign="middle"/>
 			</s:layout>
-			<s:Button id="btn_play">
+			<s:Button id="btn_play" click="btn_play_clickHandler(event)">
 				<s:label>{resourceManager.getString('end','play')}</s:label>
 			</s:Button>
-			<s:Button id="btn_home">
+			<s:Button id="btn_home" click="btn_home_clickHandler(event)">
 				<s:label>{resourceManager.getString('end','home')}</s:label>
 			</s:Button>
 		</s:Group>

@@ -14,13 +14,15 @@ package crm.gobelins.darkunicorn.views
 		public var start_signal : GotoFbSignal;
 		
 		override public function onRegister():void {
-			trace("SplashMediator.onRegister()");
-			view.btn_start.addEventListener(MouseEvent.CLICK, _onStartClicked );
+			view.btn_start_sig.addOnce(_onStartClicked);
 		}
 		
-		protected function _onStartClicked(event:MouseEvent):void
+		override public function onRemove():void{
+			view.btn_start_sig.removeAll();			
+		}
+		
+		protected function _onStartClicked():void
 		{
-			view.btn_start.removeEventListener(MouseEvent.CLICK, _onStartClicked );
 			start_signal.dispatch();
 		}
 	}

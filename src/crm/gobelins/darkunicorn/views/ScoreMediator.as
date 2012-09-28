@@ -17,24 +17,22 @@ package crm.gobelins.darkunicorn.views
 		public var home_sig : GotoHomeSignal;
 		
 		override public function onRegister():void{
-			view.btn_play.addEventListener(MouseEvent.CLICK,_onPlayClicked);
-			view.btn_home.addEventListener(MouseEvent.CLICK, _onHomeClicked);
+			view.btn_home_signal.add(_onHomeClicked);
+			view.btn_play_signal.add(_onPlayClicked);
 		}
 		
 		override public function onRemove():void{
-			view.btn_play.removeEventListener(MouseEvent.CLICK,_onPlayClicked);
-			view.btn_home.removeEventListener(MouseEvent.CLICK, _onHomeClicked);			
+			view.btn_home_signal.removeAll();
+			view.btn_play_signal.removeAll();
 		}
 		
-		protected function _onHomeClicked(event:MouseEvent):void
+		protected function _onHomeClicked():void
 		{
-			view.btn_home.removeEventListener(MouseEvent.CLICK, _onHomeClicked);
 			home_sig.dispatch();
 		}
 		
-		protected function _onPlayClicked(event:MouseEvent):void
+		protected function _onPlayClicked():void
 		{
-			view.btn_play.removeEventListener(MouseEvent.CLICK,_onPlayClicked);
 			game_sig.dispatch();	
 		}
 	}

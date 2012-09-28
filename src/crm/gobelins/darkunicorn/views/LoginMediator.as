@@ -31,68 +31,53 @@ package crm.gobelins.darkunicorn.views
 		public var home_sig : GotoHomeSignal;
 		
 		override public function onRegister():void{
-			view.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE,_onStateChanged);
-
 			fb_serv.logged_out_signal.add(_onLoggedOut);
 			score_serv.logged_in_signal.add(_onLoggedIn);
 			
+			view.btn_fb_login_signal.add(_onFbLoginClicked );
+			view.btn_nick_signal.add( _onNicknameClicked );
+			view.btn_logout_signal.add( _onLogoutClicked );
+			view.btn_play_signal.add(_onPlayClicked);
+			
 			fb_serv.testThenInit();
+		}
+		
+		override public function onRemove():void{
+			fb_serv.logged_out_signal.remove(_onLoggedOut);
+			view.btn_fb_login_signal.removeAll();
+			view.btn_nick_signal.removeAll();
+			view.btn_logout_signal.removeAll();
 		}
 		
 		protected function _onLoggedIn( user : UserVo ):void
 		{
 			view.data = user;
 			view.onLoggedIn();
-			view.btn_play.addEventListener(MouseEvent.CLICK, _onHomeClicked );
-			view.btn_logout.addEventListener(MouseEvent.CLICK, _onLogoutClicked );
 		}
 		
-		protected function _onStateChanged(event:StateChangeEvent):void
+		protected function _onNicknameClicked(nickname : String):void
 		{
-			if( event.newState == "local" )
-				view.btn_nickname.addEventListener( MouseEvent.CLICK,_onNicknameClicked);
-		}
-		
-		protected function _onNicknameClicked(event:MouseEvent):void
-		{
-			view.btn_nickname.removeEventListener( MouseEvent.CLICK,_onNicknameClicked);
-			score_serv.setUser( view.nickname.text );
-		}
-		
-		override public function onRemove():void{
-			fb_serv.logged_out_signal.remove(_onLoggedOut);
+			score_serv.setUser( nickname );
 		}
 		
 		protected function _onLoggedOut():void
 		{
-			trace("LoginMediator._onFbLoggedOut()");
 			view.onLoggedOut();
-			view.btn_login.addEventListener(MouseEvent.CLICK,_onLoginClicked);
 		}
 		
-		protected function _onHomeClicked(event:MouseEvent):void
+		protected function _onLogoutClicked():void
 		{
-			view.btn_play.removeEventListener(MouseEvent.CLICK, _onHomeClicked );
-			home_sig.dispatch();	
-		}
-		
-		protected function _onLogoutClicked(event:MouseEvent):void
-		{
-			view.btn_logout.removeEventListener(MouseEvent.CLICK, _onLogoutClicked );
 			fb_serv.logoutFacebook();
 		}
 		
-		protected function _onLoginClicked(event:MouseEvent):void
+		protected function _onFbLoginClicked():void
 		{
-			view.btn_cancel.addEventListener(MouseEvent.CLICK,_onCancelClicked);
-			view.btn_login.removeEventListener(MouseEvent.CLICK,_onLoginClicked);
 			fb_serv.loginFacebook(view.login_vo);
 		}
 		
-		protected function _onCancelClicked(event:MouseEvent):void
+		protected function _onPlayClicked():void
 		{
-			view.btn_cancel.removeEventListener(MouseEvent.CLICK,_onCancelClicked);
-			view.btn_login.addEventListener(MouseEvent.CLICK,_onLoginClicked);	
+			home_sig.dispatch();				
 		}
 		
 	}

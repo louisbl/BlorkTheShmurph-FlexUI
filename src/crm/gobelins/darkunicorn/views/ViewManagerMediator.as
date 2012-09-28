@@ -29,7 +29,7 @@ package crm.gobelins.darkunicorn.views
 		}
 		
 		protected function _onChangeView( vo : ChangeViewVo ) : void {
-			view.pushView(vo.viewClass, vo.data );
+			view.replaceView(vo.viewClass, vo.data );
 		}
 	}
 }

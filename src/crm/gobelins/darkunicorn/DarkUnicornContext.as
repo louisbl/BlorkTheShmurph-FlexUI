@@ -57,7 +57,7 @@ package crm.gobelins.darkunicorn
 			signalCommandMap.mapSignalClass(GotoScoreSignal,GotoScoreCommand);
 			
 			injector.mapSingleton(ChangeViewSignal);
-
+			
 			mediatorMap.mapView(GameView, GameMediator );
 			mediatorMap.mapView(ViewManager,ViewManagerMediator);
 			mediatorMap.mapView(SplashView,SplashMediator);
@@ -69,8 +69,6 @@ package crm.gobelins.darkunicorn
 			var vm : ViewManager = new ViewManager();
 			vm.firstView = AView;
 			(contextView as Application).addElement( vm );
-			
-			super.startup();
 		}
 	}
 }
